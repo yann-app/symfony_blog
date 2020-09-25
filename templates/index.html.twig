@@ -1,0 +1,18 @@
+{% extends "base.html.twig"%}
+
+
+{% block content %}
+
+    <article class="container">
+        <div class="row">
+            <h2>Liste des articles</h2>
+            {% for article in article %}
+            <div class="col s6 m6 l6">
+                    <h3>{{ article.title }}</h3>
+                    <span>{{ article.publicationDate|date('d/m/y') }}</span>
+                    <p><a href="show/{{ article.id }}"><img width="300" height="250" src="{{ asset('uploads/' ~ article.picture) }}" alt="img"></a></p>
+            </div>
+                {% endfor %}
+        </div>
+    </article>
+{% endblock %}
