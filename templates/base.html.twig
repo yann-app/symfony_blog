@@ -10,26 +10,32 @@
         {% endblock %}
     </head>
     <body>
-        <nav>
-            <div class="nav-wrapper">
-                <div class="container">
-                    <a href="{{ path('homepage') }}" class="brand-logo">Symfony Blog</a>
-                    <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        <li><a href="{{ path('homepage') }}">Home</a> </li>
-                        {% if app.user %}
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <li><a href="/admin">Admin</a></li>
-                            {% endif %}
-                            <li><a href="{{ path('article_add') }}">Ajouter article</a> </li>
+    <nav>
+        <div class="nav-wrapper">
+            <div class="container">
+                <a href="{{ path('homepage') }}" class="brand-logo">Symfony Blog</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="{{ path('homepage') }}">Home</a> </li>
+                    {% if app.user %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li><a href="/admin">Admin</a></li>
+                        {% endif %}
+                        <li>Bienvenue "{{ app.user.username }}"</li>
+                        <li><a href="">Mon Compte</a> </li>
+                        <li><a href="{{ path('article_add') }}">Ajouter article</a> </li>
                         <li><a href="/logout">Logout</a> </li>
-                        {% else %}
+                    {% else %}
+                        <li>Créez un compte et ajoutez un article</li>
                         <li><a href="/login">Login</a> </li>
                         <li><a href="/register">Register</a> </li>
-                        {% endif %}
-                    </ul>
-                </div>
+                    {% endif %}
+                </ul>
             </div>
-        </nav>
+        </div>
+    </nav>
+
+
+
         {% block content %}{% endblock %}
         {% block javascripts %}{% endblock %}
 

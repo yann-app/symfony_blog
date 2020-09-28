@@ -44,7 +44,7 @@
 
             <div class="row">
 
-                <div class="col s12 m-t-30">
+                <div class="col s12 m-t-30" style="list-style-type: none">
                     <h5>Utilisateurs</h5>
                     <table>
                         <tr>
@@ -61,9 +61,9 @@
                             <td>{{ user.email }}</td>
                             <td>{{ user.username }}</td>
                             <td>
-                                <span class="badge {{ user.roles ? 'blue' : 'red' }}">
-                                    {{ user.roles ? 'ROLE_ADMIN' : '' }}
-                                </span>
+                                    {% for unrole in user.roles %}
+                                        <li>{{unrole}}</li>
+                                    {% endfor %}
                             </td>
                             <td>
                                 <a href="{{ path('admin_user_delete', {'id': user.id}) }}"><i class="material-icons red-text">delete</i> </a>

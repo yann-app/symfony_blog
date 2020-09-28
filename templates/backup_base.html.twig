@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Symfony blog{% endblock %}</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% block stylesheets %}
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        {% endblock %}
+    </head>
+    <body>
+        <nav>
+            <div class="nav-wrapper">
+                <div class="container">
+                    <a href="{{ path('homepage') }}" class="brand-logo">Symfony Blog</a>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <li><a href="{{ path('homepage') }}">Home</a> </li>
+                        {% if app.user %}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li><a href="/admin">Admin</a></li>
+                            {% endif %}
+                            <li><a href="{{ path('article_add') }}">Ajouter article</a> </li>
+                        <li><a href="/logout">Logout</a> </li>
+                        {% else %}
+                        <li><a href="/login">Login</a> </li>
+                        <li><a href="/register">Register</a> </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <h1>Manage Comments</h1>
+                <form>
+                    <div class="input-group mb-3">
+                        <input type="text"
+                               name="q"
+                               class="form-control"
+                               placeholder="Search..."
+                        >
+                        <div class="input-group-append">
+                            <button type="submit"
+                                    class="btn btn-outline-secondary">
+                                <span class="fa fa-search">Search</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
+
+
+        {% block content %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+
+        {% block scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script type="text/javascript">
+        $('select').formSelect();
+    </script>
+    {% endblock %}
+    </body>
+</html>

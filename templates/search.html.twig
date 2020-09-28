@@ -1,0 +1,34 @@
+{% extends 'base.html.twig'%}
+
+{% block content %}
+    <div class="container center" xmlns="http://www.w3.org/1999/html">
+<p>Votre recherche</p>
+
+<div class="form-group">
+    {% form_theme searchForm 'bootstrap_4_layout.html.twig' %}
+    {{ form_start(searchForm) }}
+    {{ form_row(searchForm.title, {'label': " ", 'attr': {'placeholder': 'mot clé...'}}) }}
+    <div class="input-field col s12 m12 l12">
+        <input type="submit" name="submit" value="Enregistrer" class="btn btn-primary">
+    </div>
+    {{ form_end(searchForm) }}
+</div>
+
+
+    <article class="container">
+        <div class="row">
+            <h2>Liste des articles</h2>
+            {% for article in articles %}
+                <div class="col s6 m6 l6" style="border-style: groove">
+                    <h3>{{ article.title }}</h3>
+                    <p><img src="{{ asset('uploads/' ~ article.picture) }}"></p>
+                    <span>Publié le {{ article.publicationDate|date('d/m/y') }}</span></br>
+                    <a href="show/{{ article.id }}" class="btn btn-primary">Lire la suite</a>
+                </div>
+            {% endfor %}
+        </div>
+    </article>
+                <div class="pagination">
+                    {{ knp_pagination_render(articles) }}
+                </div>
+                {% endblock %}

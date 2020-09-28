@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Form\SearchType;
+use App\Repository\ArticleRepository;
 use App\Entity\Article;
 use App\Entity\User;
 use App\Form\ArticleType;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,7 +24,9 @@ class BlogController extends AbstractController
             ['isPublished' => true],
             ['publicationDate' => 'desc']
         );
-        return $this->render('index.html.twig', ['article' => $articles]);
+        return $this->render('index.html.twig', [
+            'article' => $articles
+        ]);
     }
 
 
@@ -67,7 +72,6 @@ class BlogController extends AbstractController
     }
 
 
-
     public function add(Request $request)
     {
         $article = new Article();
@@ -79,7 +83,7 @@ class BlogController extends AbstractController
 
             if ($article->getPicture() !== null) {
                 $file = $form->get('picture')->getData();
-                $filename = uniqid().'.'.$file->guessExtension();
+                $filename = uniqid() . '.' . $file->guessExtension();
 
                 try {
                     $file->move(
@@ -107,7 +111,6 @@ class BlogController extends AbstractController
             'form' => $form->createView()
         ]);
     }
-
 
 
     public function show(Article $article)
@@ -154,4 +157,46 @@ class BlogController extends AbstractController
 
         return $this->redirectToRoute('admin');
     }
+
+
+
+    public function recherche(Request $request, ArticleRepository $repo, PaginatorInterface $paginator)
+    {
+
+        $searchForm = $this->createForm(SearchType::class);
+        $searchForm->handleRequest($request);
+
+        $donnees = $repo->findAll();
+
+        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
+
+            $title = $searchForm->getData()->getTitle();
+
+            $donnees = $repo->search($title);
+
+
+            if ($donnees == null) {
+                $this->addFlash('erreur',
+                    'Aucun article contenant ce mot clé dans le titre n\'a été trouvé, essayez en un autre.');
+
+            }
+
+        }
+
+        // Paginate the results of the query
+        $articles = $paginator->paginate(
+        // Doctrine Query, not results
+            $donnees,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            4
+
+        );
+
+                return $this->render('search.html.twig', [
+                'articles' => $articles,
+                'searchForm' => $searchForm->createView()
+            ]);
+        }
 }
