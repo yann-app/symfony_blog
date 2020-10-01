@@ -159,7 +159,6 @@ class BlogController extends AbstractController
     }
 
 
-
     public function recherche(Request $request, ArticleRepository $repo, PaginatorInterface $paginator)
     {
 

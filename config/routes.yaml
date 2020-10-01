@@ -30,7 +30,3 @@ admin_user_delete:
   path: /admin/user_delete/{id}
   controller: App\Controller\BlogController::admin_user_delete
 
-user_account:
-  path: /user/account/{id}
-  controller: App\Controller\blogController::user_account
-
